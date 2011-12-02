@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Samurai Weapons Store</title>
+    <link rel="stylesheet" href="/stylesheets/application.css">   
+    <%- @head.get() %>
+  </head>
+  <body>
+    <header id="banner">
+      <h1>Samurai Weapons</h1>
+    </header>
+
+    <%- @body %>
+  </body>
+</html>
+
