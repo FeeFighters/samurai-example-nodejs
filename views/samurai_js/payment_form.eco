@@ -1,9 +1,10 @@
+<% @config = @samurai.Connection.config %>
 <% @head.append => %>
   <script type="text/javascript" src="https://samurai.feefighters.com/assets/api/samurai.js"></script>
   <script type="text/javascript">
   // Initialize Samurai.js.
   Samurai.init({
-    merchant_key: '<%= @merchant_key %>',
+    merchant_key: '<%= @config.merchant_key %>',
     sandbox: true,
     debug: true
   });
