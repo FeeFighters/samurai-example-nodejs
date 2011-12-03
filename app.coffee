@@ -129,4 +129,56 @@ app.get '/transparent_redirect/purchase', (req, res) ->
 app.get '/transparent_redirect/receipt', (req, res) ->
   res.render 'transparent_redirect/receipt'
 
+# =============================================================================
+
+# Payment form for Server-to-Server API
+# -------------------------------------
+#
+# * Displays a payment form that POSTs to the purchase method below
+# * The credit card data is provided directly to this rails server, where it is used to process a
+#   transaction entirely on the backend.
+# * A payment_method_token or reference_id can be provided in the params so that validation errors can be displayed.
+#
+app.get '/server_to_server/payment_form', (req, res) ->
+  if req.query.payment_method_token
+    samurai.PaymentMethod.find req.query.payment_method_token,
+      (err, paymentMethod) ->
+        res.render 'server_to_server/payment_form',
+                    paymentMethod: paymentMethod
+  else
+    res.render 'server_to_server/payment_form'
+
+# Purchase action for Server-to-Server API
+# ----------------------------------------
+#
+# * Payment Method details are POST'ed directly to the server, which performs a S2S API call
+# * NOTE: This approach is typically not recommended, as it comes with a much greater PCI compliance burden
+#   In general, it is a good idea to prevent the credit card details from ever touching your server.
+#
+app.post '/server_to_server/purchase', (req, res) ->
+  # First create the payment method we'll use for this purchase.
+  samurai.PaymentMethod.create req.body.payment_method,
+    (err, paymentMethod) ->
+      return res.redirect('/server_to_server/payment_form') unless paymentMethod
+      
+      # Do the purchase itself.
+      samurai.Processor.purchase paymentMethod.token,
+        122.00, # The price for the Server-to-Server Battle Axe + Shipping
+        {
+          descriptor: 'Server-to-Server Battle Axe',
+          customer_reference: +new Date(),
+          billing_reference: +new Date()
+        },
+        (err, purchase) ->
+          if purchase.isSuccess()
+            res.redirect '/server_to_server/receipt'
+          else
+            qs = querystring.stringify(payment_method_token: paymentMethod.token)
+            res.redirect '/server_to_server/payment_form?'+qs
+
+# Purchase confirmation & receipt page
+# ------------------------------
+app.get '/server_to_server/receipt', (req, res) ->
+  res.render 'server_to_server/receipt'
+
 app.listen(3000)
