@@ -1,4 +1,5 @@
-= Samurai Node.js Example Application
+Samurai Node.js Example Application
+===================================
 
 This is a demo node.js app designed to show how easy it is to process
 payments using the [Samurai gateway](http://samurai.feefighters.com). To install
@@ -13,3 +14,5 @@ To start the webserver:
 
 Then visit `http://localhost:3000` to start playing with it.
 
+For information about the various parameters you can use to trigger
+specific processor responses, see the [Developer Sandbox](https://samurai.feefighters.com/developers/sandbox) page.
