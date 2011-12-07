@@ -26,6 +26,7 @@ app.helpers
       head = ''
       {
         append: (s) -> head += s()
+        insert: (s) -> head = s()
         get: -> head
       }
 
@@ -78,7 +79,7 @@ app.get '/samurai_js/receipt', (req, res) ->
 
 # =============================================================================
 
-# Payment form for Transparent Redirect 
+# Payment form for Transparent Redirect
 # ------------------------------
 #
 # * Displays a payment form using the Samurai view helpers bundled in the samurai module.
@@ -109,7 +110,7 @@ app.get '/transparent_redirect/purchase', (req, res) ->
   samurai.PaymentMethod.find req.query.payment_method_token,
     (err, paymentMethod) ->
       return res.redirect('/transparent_redirect/payment_form') unless paymentMethod
-      
+
       samurai.Processor.purchase paymentMethod.token,
         122.00, # The price for the Transparent Redirect Nunchucks
         {
@@ -160,7 +161,7 @@ app.post '/server_to_server/purchase', (req, res) ->
   samurai.PaymentMethod.create req.body.payment_method,
     (err, paymentMethod) ->
       return res.redirect('/server_to_server/payment_form') unless paymentMethod
-      
+
       # Do the purchase itself.
       samurai.Processor.purchase paymentMethod.token,
         122.00, # The price for the Server-to-Server Battle Axe + Shipping
