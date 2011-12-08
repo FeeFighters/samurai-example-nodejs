@@ -1,5 +1,5 @@
 <% @config = @samurai.Connection.config %>
-<% @head.append => %>
+<% @head.insert => %>
   <script type="text/javascript" src="https://samurai.feefighters.com/assets/api/samurai.js"></script>
   <script type="text/javascript">
   // Initialize Samurai.js.
@@ -11,7 +11,7 @@
 
   (function($) {
     // On DOMReady:
-    $(function() { 
+    $(function() {
 
       // Bind to the 'payment' event, which lets you know when a payment_method
       // has been created and gives you a payment_method_token to use in the transaction
@@ -32,7 +32,7 @@
             Samurai.PaymentErrorHandler.for($('form').get(0)).handleErrorsFromResponse(transaction);
           }
         });
-      });    
+      });
 
     });
   })(Samurai.jQuery);
