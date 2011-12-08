@@ -18,11 +18,13 @@ samurai.setup samuraiConfig
 # ------------------------------
 app = express.createServer()
 
-app.helpers
-  # Exposes the samurai object to the views.
-  samurai: samurai,
+# Exposes the samurai object to the views.
+app.helpers samurai: samurai
+
+app.dynamicHelpers
   # Lets you append content to the <head> in the layout from inside the action views.
-  head: do ->
+  head: (req, res) ->
+    do ->
       head = ''
       {
         append: (s) -> head += s()
