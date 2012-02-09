@@ -5,7 +5,6 @@
   // Initialize Samurai.js.
   Samurai.init({
     merchant_key: '<%= @config.merchant_key %>',
-    sandbox: true,
     debug: true
   });
 
@@ -29,7 +28,7 @@
           } else {
             // Let the error handler scan the response object for errors,
             // then display these errors
-            Samurai.PaymentErrorHandler.for($('form').get(0)).handleErrorsFromResponse(transaction);
+            Samurai.PaymentErrorHandler.forForm($('form').get(0)).handleErrorsFromResponse(transaction);
           }
         });
       });    
